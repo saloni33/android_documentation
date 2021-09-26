@@ -8,4 +8,4 @@ Notifications could be of various formats and designs depending upon the develop
 4. Lock-Screen Notification - It appears on the lock screen. Beginning with Android 5.0, notifications can appear on the lock screen.
 5. App icon badge -  In supported launchers on devices running Android 8.0 (API level 26) and higher, app icons indicate new notifications with a colored "badge" (also known as a "notification dot") on the corresponding app launcher icon.  
   
-<img src="https://github.com/saloni33/android_documentation/blob/main/image/app_badge_icon.png" width="350" height="200" hspace="60"><img src="https://github.com/saloni33/android_documentation/blob/main/image/status_bar.png" width="350" height="200" hspace="60">
+<img src="https://github.com/saloni33/android_documentation/blob/main/image/app_badge_icon.png" width="350" height="200" hspace="30"><img src="https://github.com/saloni33/android_documentation/blob/main/image/status_bar.png" width="350" height="200" hspace="30">

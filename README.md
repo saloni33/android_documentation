@@ -21,8 +21,8 @@ Notifications could be of various formats and designs depending upon the develop
 
 ## Create a Notification
 The design of notification is quite simple, it contains an icon, title, some brief about the message(optional), and click. An example of the same is shown below:
-<p float="center">
-  <img src="https://github.com/saloni33/android_documentation/blob/main/image/example_image.png" width="500" height="200">
+<p align="center">
+  <img src="https://github.com/saloni33/android_documentation/blob/main/image/example_image.png" width="540" height="200">
 </p>
 1. Small Icon - This can be set using setSmallIcon(). <br/>
 2. App Name - This is provided by the app itself. <br/>
@@ -37,3 +37,37 @@ By managing different channels, users will be able to disable specific notificat
 One app can have multiple notification channels—a separate channel for each type of notification the app issues. An app can also create notification channels in response to choices made by users of your app.<br/><br/>
 For example, have a look at the <b>Clock</b> app that is installed with Android (tap Settings > App Notifications > Notifications and select Clock from the list). 
 
+## How to Create a Notification
+Below are the steps which are required for creating a notification in android - 
+1. Add the support Library <br/>
+Many projects made with Android Studio already include the necessary dependencies to use NotificationCompat, if not you should add the following dependencies in build.gradle file:
+```
+val core_version = "1.6.0"
+dependencies {
+    implementation "androidx.core:core:$core_version"
+}
+```
+
+2. Create a basic notification <br/>
+A basic notification contains an icon, title, a short description. Below are some steps, from which you can learn how to create a simple notification that a user can click on.
+<p align="left">
+  <img src="https://github.com/saloni33/android_documentation/blob/main/image/basic_notification.jpeg" width="350" height="150">
+</p>
+
+- Set notification content <br/>
+First of all, we need to set the notification content and channel using a NotificationCompat.Builder object. <br/>
+A small icon can be set using setSmallIcon(), title by setContentTitle(), text of the notification by setContentText(), and notification priority by using setPriority(). <br/>
+Example code for Java is - 
+
+``` 
+NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+        .setSmallIcon(R.drawable.notification_icon)
+        .setContentTitle(textTitle)
+        .setContentText(textContent)
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+```
+If you want a notification to be longer, you can use setStyle() for the same.
+
+- Create a channel and set the importance <br/>
+For the version Android 8.0 and higher, you need to register the notification channel of your app with the system by passing an instance of NotificationChannel to createNotificationChannel(). <br/>  To create a notification channel, you need to follow the following steps- 
+Construct a NotificationChannel object which requires unique channel_id and channel_name strings. The Importance argument is an int that specifies the level of interruption by the notification. . It can be one of the following values: </br/>

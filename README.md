@@ -50,13 +50,13 @@ dependencies {
 
 2. Create a basic notification <br/>
 A basic notification contains an icon, title, a short description. Below are some steps, from which you can learn how to create a simple notification that a user can click on.
-<p align="left">
+<p align="center">
   <img src="https://github.com/saloni33/android_documentation/blob/main/image/basic_notification.jpeg" width="350" height="150">
 </p>
 
 - Set notification content <br/>
 First of all, we need to set the notification content and channel using a NotificationCompat.Builder object. <br/>
-A small icon can be set using setSmallIcon(), title by setContentTitle(), text of the notification by setContentText(), and notification priority by using setPriority(). <br/>
+A small icon can be set using setSmallIcon(), title by setContentTitle(), text of the notification by setContentText(), and notification priority by using setPriority(). If you want a notification to be longer, you can use setStyle() for the same. <br/>
 Example code for Java is - 
 
 ``` 
@@ -66,8 +66,67 @@ NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNE
         .setContentText(textContent)
         .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 ```
-If you want a notification to be longer, you can use setStyle() for the same.
 
 - Create a channel and set the importance <br/>
 For the version Android 8.0 and higher, you need to register the notification channel of your app with the system by passing an instance of NotificationChannel to createNotificationChannel(). <br/>  To create a notification channel, you need to follow the following steps- 
 Construct a NotificationChannel object which requires unique channel_id and channel_name strings. The Importance argument is an int that specifies the level of interruption by the notification. . It can be one of the following values: <br/>
+
+| Importance (Android 8.0 and higher) | Description |
+| --- | --- |
+| IMPORTANCE_DEFAULT | Shows up in the system tray. Makes sound. Doesn’t visually pop up. |
+| IMPORTANCE_HIGH | Visually pops up too. |
+| IMPORTANCE_LOW | Shows in the tray. No pop-up. No sound. |
+| IMPORTANCE_NONE | Doesn’t show up. Kind of blocked notifications. |
+
+&nbsp; &nbsp; The sample code for creating a channel is - 
+
+```
+private void createNotificationChannel() {
+    // Create the NotificationChannel, but only on API 26+ because
+    // the NotificationChannel class is new and not in the support library
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        CharSequence name = getString(R.string.channel_name);
+        String description = getString(R.string.channel_description);
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+        channel.setDescription(description);
+        // Register the channel with the system; you can't change the importance
+        // or other notification behaviors after this
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
+    }
+}
+```
+- Set the notification's tap action <br/>
+When a user taps on any notification, it should respond by opening an activity in the app which corresponds to that particular notification. For the same, you need to specify a content intent defined with a PendingIntent object and pass it to setContentIntent(). <br/>
+The following sample code shows how to create a basic intent to open an activity when the user taps the notification: <br/>
+```
+// Create an explicit intent for an Activity in your app
+Intent intent = new Intent(this, AlertDetails.class);
+intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+        .setSmallIcon(R.drawable.notification_icon)
+        .setContentTitle("My notification")
+        .setContentText("Hello World!")
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        // Set the intent that will fire when the user taps the notification
+        .setContentIntent(pendingIntent)
+        .setAutoCancel(true);
+```
+
+- Show the notification <br/>
+To make the notification appear on the screen, we need to call NotificationManagerCompat.notify(),  passing it a unique ID for the notification and the result of NotificationCompat.Builder.build().
+```
+NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+// notificationId is a unique int for each notification that you must define
+notificationManager.notify(notificationId, builder.build());
+```
+3. Add action buttons <br/>
+When we receive a notification, there is only a single action available -tapping on the notification. However, Action Buttons allow more than one action to be taken on a notification, allowing for greater interactivity within notifications, like snooze or dismiss, etc.
+
+<p align="center">
+  <img src="https://github.com/saloni33/android_documentation/blob/main/image/snooze_example.jpeg" width="320" height="220">
+</p>
+
+&nbsp; &nbsp;  To add an action button, pass a PendingIntent to the addAction() method. This is just like setting up the notification's default tap action, except instead of launching an activity.

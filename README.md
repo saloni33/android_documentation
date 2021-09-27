@@ -70,4 +70,4 @@ If you want a notification to be longer, you can use setStyle() for the same.
 
 - Create a channel and set the importance <br/>
 For the version Android 8.0 and higher, you need to register the notification channel of your app with the system by passing an instance of NotificationChannel to createNotificationChannel(). <br/>  To create a notification channel, you need to follow the following steps- 
-Construct a NotificationChannel object which requires unique channel_id and channel_name strings. The Importance argument is an int that specifies the level of interruption by the notification. . It can be one of the following values: </br/>
+Construct a NotificationChannel object which requires unique channel_id and channel_name strings. The Importance argument is an int that specifies the level of interruption by the notification. . It can be one of the following values: <br/>

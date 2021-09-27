@@ -129,4 +129,22 @@ When we receive a notification, there is only a single action available -tapping
   <img src="https://github.com/saloni33/android_documentation/blob/main/image/snooze_example.jpeg" width="320" height="220">
 </p>
 
-&nbsp; &nbsp;  To add an action button, pass a PendingIntent to the addAction() method. This is just like setting up the notification's default tap action, except instead of launching an activity.
+&nbsp; &nbsp;  To add an action button, pass a PendingIntent to the addAction() method. This is just like setting up the notification's default tap action, &nbsp; &nbsp;except instead of launching an activity.
+
+```
+Intent snoozeIntent = new Intent(this, MyBroadcastReceiver.class);
+snoozeIntent.setAction(ACTION_SNOOZE);
+snoozeIntent.putExtra(EXTRA_NOTIFICATION_ID, 0);
+PendingIntent snoozePendingIntent =
+        PendingIntent.getBroadcast(this, 0, snoozeIntent, 0);
+
+NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+        .setSmallIcon(R.drawable.notification_icon)
+        .setContentTitle("My notification")
+        .setContentText("Hello World!")
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        .setContentIntent(pendingIntent)
+        .addAction(R.drawable.ic_snooze, getString(R.string.snooze),
+                snoozePendingIntent);
+```
+&nbsp; &nbsp;  Above is the code that shows how to send a broadcast to a specific receiver.

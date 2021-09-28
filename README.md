@@ -41,12 +41,14 @@ For example, have a look at the <b>Clock</b> app that is installed with Android 
 Below are the steps which are required for creating a notification in android - 
 1. Add the support Library <br/>
 Many projects made with Android Studio already include the necessary dependencies to use NotificationCompat, if not you should add the following dependencies in build.gradle file:
-```
-val core_version = "1.6.0"
-dependencies {
-    implementation "androidx.core:core:$core_version"
-}
-```
+
+  ```
+   val core_version = "1.6.0"
+   dependencies {
+       implementation "androidx.core:core:$core_version"
+   }
+   
+  ```
 
 2. Create a basic notification <br/>
 A basic notification contains an icon, title, a short description. Below are some steps, from which you can learn how to create a simple notification that a user can click on.
@@ -59,13 +61,13 @@ First of all, we need to set the notification content and channel using a Notifi
 A small icon can be set using setSmallIcon(), title by setContentTitle(), text of the notification by setContentText(), and notification priority by using setPriority(). If you want a notification to be longer, you can use setStyle() for the same. <br/>
 Example code for Java is - 
 
-``` 
-NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-        .setSmallIcon(R.drawable.notification_icon)
-        .setContentTitle(textTitle)
-        .setContentText(textContent)
-        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-```
+  ``` 
+  NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+          .setSmallIcon(R.drawable.notification_icon)
+          .setContentTitle(textTitle)
+          .setContentText(textContent)
+          .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+  ```
 
 - Create a channel and set the importance <br/>
 For the version Android 8.0 and higher, you need to register the notification channel of your app with the system by passing an instance of NotificationChannel to createNotificationChannel(). <br/>  To create a notification channel, you need to follow the following steps- 
@@ -78,8 +80,7 @@ Construct a NotificationChannel object which requires unique channel_id and chan
   | IMPORTANCE_LOW | Shows in the tray. No pop-up. No sound. |
   | IMPORTANCE_NONE | Doesn’t show up. Kind of blocked notifications. |
 
-&nbsp; &nbsp; The sample code for creating a channel is - 
-
+&nbsp; &nbsp; &nbsp; &nbsp; The sample code for creating a channel is - 
   ```
   private void createNotificationChannel() {
       // Create the NotificationChannel, but only on API 26+ because
@@ -96,6 +97,7 @@ Construct a NotificationChannel object which requires unique channel_id and chan
           notificationManager.createNotificationChannel(channel);
       }
   }
+  
   ```
 - Set the notification's tap action <br/>
 When a user taps on any notification, it should respond by opening an activity in the app which corresponds to that particular notification. For the same, you need to specify a content intent defined with a PendingIntent object and pass it to setContentIntent(). <br/>
@@ -131,22 +133,21 @@ When we receive a notification, there is only a single action available -tapping
 
 &nbsp; &nbsp;  To add an action button, pass a PendingIntent to the addAction() method. This is just like setting up the &nbsp; &nbsp; notification's default tap action, except instead of launching an activity.
 
- ```
- Intent snoozeIntent = new Intent(this, MyBroadcastReceiver.class);
- snoozeIntent.setAction(ACTION_SNOOZE);
- snoozeIntent.putExtra(EXTRA_NOTIFICATION_ID, 0);
- PendingIntent snoozePendingIntent =
-         PendingIntent.getBroadcast(this, 0, snoozeIntent, 0);
+  ```
+   Intent snoozeIntent = new Intent(this, MyBroadcastReceiver.class);
+   snoozeIntent.setAction(ACTION_SNOOZE);
+   snoozeIntent.putExtra(EXTRA_NOTIFICATION_ID, 0);
+   PendingIntent snoozePendingIntent = PendingIntent.getBroadcast(this, 0, snoozeIntent, 0);
 
- NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-         .setSmallIcon(R.drawable.notification_icon)
-         .setContentTitle("My notification")
-         .setContentText("Hello World!")
-         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-         .setContentIntent(pendingIntent)
-         .addAction(R.drawable.ic_snooze, getString(R.string.snooze),
-                 snoozePendingIntent);
- ```
+   NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+          .setSmallIcon(R.drawable.notification_icon)
+          .setContentTitle("My notification")
+          .setContentText("Hello World!")
+          .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+          .setContentIntent(pendingIntent)
+          .addAction(R.drawable.ic_snooze, getString(R.string.snooze),
+                  snoozePendingIntent);
+  ```
 &nbsp; &nbsp;  Above is the code that shows how to send a broadcast to a specific receiver.
 
 4. Add a direct reply action <br/>
@@ -202,16 +203,29 @@ Steps to create notification action with a direct reply
     NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
     notificationManager.notify(notificationId, newMessageNotification);
    ```
-   
-   
+- Retrieve user input from the reply <br/>
+To receive the input from the notification's reply UI which the user has entered, you need to call RemoteInput.getResultsFromIntent() ,passing it the Intent received by your BroadcastReceiver.
+  ```
+    private CharSequence getMessageText(Intent intent) {
+     Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
+     if (remoteInput != null) {
+         return remoteInput.getCharSequence(KEY_TEXT_REPLY);
+     }
+     return null;
+  }
+  ```
+&nbsp; &nbsp;&nbsp; &nbsp; After this step, you need to update the notification, so as to hide the direct reply UI,  by calling NotificationManagerCompat.notify() with the same ID and tag (if used). 
 
+  ```
+   // Build a new notification, which informs the user that the system
+   // handled their interaction with the previous notification.
+   Notification repliedNotification = new Notification.Builder(context, CHANNEL_ID)
+          .setSmallIcon(R.drawable.ic_message)
+          .setContentText(getString(R.string.replied))
+          .build();
+  // Issue the new notification.
+  NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+  notificationManager.notify(notificationId, repliedNotification);
   
-  
-   
-   
-    
-
+  ```
  
-
-
-

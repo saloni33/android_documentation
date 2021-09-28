@@ -24,7 +24,7 @@ The design of notification is quite simple, it contains an icon, title, some bri
 <p align="center">
   <img src="https://github.com/saloni33/android_documentation/blob/main/image/example_image.png" width="540" height="200">
 </p>
-1. Small Icon - This can be set using [setSmallIcon](https://developer.android.com/reference/android/app/Notification.Builder#setSmallIcon) <br/>
+1. Small Icon - This can be set using setSmallIcon(). <br/>
 2. App Name - This is provided by the app itself. <br/>
 3. Timestamp - This is provided by the system but you can override it with setWhen() or hide it with setShowWhen(false). <br/>
 4. Large icon - This is optional (usually used only for contact photos; do not use it for your app icon) and set with setLargeIcon(). <br/>
@@ -42,13 +42,13 @@ Below are the steps which are required for creating a notification in android -
 1. Add the support Library <br/>
 Many projects made with Android Studio already include the necessary dependencies to use NotificationCompat, if not you should add the following dependencies in build.gradle file:
 
-  ```
-   val core_version = "1.6.0"
-   dependencies {
-       implementation "androidx.core:core:$core_version"
-   }
+   ```
+     val core_version = "1.6.0"
+     dependencies {
+         implementation "androidx.core:core:$core_version"
+     }
    
-  ```
+   ```
 
 2. Create a basic notification <br/>
 A basic notification contains an icon, title, a short description. Below are some steps, from which you can learn how to create a simple notification that a user can click on.
@@ -81,11 +81,12 @@ Construct a NotificationChannel object which requires unique channel_id and chan
   | IMPORTANCE_NONE | Doesn’t show up. Kind of blocked notifications. |
 
 &nbsp; &nbsp; &nbsp; &nbsp; The sample code for creating a channel is - 
-  ```
-  private void createNotificationChannel() {
-      // Create the NotificationChannel, but only on API 26+ because
-      // the NotificationChannel class is new and not in the support library
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+   ```
+     private void createNotificationChannel() {
+     // Create the NotificationChannel, but only on API 26+ because
+     // the NotificationChannel class is new and not in the support library
+     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
           CharSequence name = getString(R.string.channel_name);
           String description = getString(R.string.channel_description);
           int importance = NotificationManager.IMPORTANCE_DEFAULT;
@@ -97,8 +98,7 @@ Construct a NotificationChannel object which requires unique channel_id and chan
           notificationManager.createNotificationChannel(channel);
       }
   }
-  
-  ```
+   ```
 - Set the notification's tap action <br/>
 When a user taps on any notification, it should respond by opening an activity in the app which corresponds to that particular notification. For the same, you need to specify a content intent defined with a PendingIntent object and pass it to setContentIntent(). <br/>
 The following sample code shows how to create a basic intent to open an activity when the user taps the notification: <br/>
@@ -131,33 +131,35 @@ When we receive a notification, there is only a single action available -tapping
   <img src="https://github.com/saloni33/android_documentation/blob/main/image/snooze_example.jpeg" width="320" height="220">
 </p>
 
-&nbsp; &nbsp;  To add an action button, pass a PendingIntent to the addAction() method. This is just like setting up the &nbsp; &nbsp; notification's default tap action, except instead of launching an activity.
+&nbsp; &nbsp; To add an action button, pass a PendingIntent to the addAction() method. This is just like setting up 
+&nbsp; &nbsp; the notification's default tap action, except instead of launching an activity.
 
   ```
-   Intent snoozeIntent = new Intent(this, MyBroadcastReceiver.class);
-   snoozeIntent.setAction(ACTION_SNOOZE);
-   snoozeIntent.putExtra(EXTRA_NOTIFICATION_ID, 0);
-   PendingIntent snoozePendingIntent = PendingIntent.getBroadcast(this, 0, snoozeIntent, 0);
+    Intent snoozeIntent = new Intent(this, MyBroadcastReceiver.class);
+    snoozeIntent.setAction(ACTION_SNOOZE);
+    snoozeIntent.putExtra(EXTRA_NOTIFICATION_ID, 0);
+    PendingIntent snoozePendingIntent = PendingIntent.getBroadcast(this, 0, snoozeIntent, 0);
 
-   NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-          .setSmallIcon(R.drawable.notification_icon)
-          .setContentTitle("My notification")
-          .setContentText("Hello World!")
-          .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-          .setContentIntent(pendingIntent)
-          .addAction(R.drawable.ic_snooze, getString(R.string.snooze),
-                  snoozePendingIntent);
+    NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+           .setSmallIcon(R.drawable.notification_icon)
+           .setContentTitle("My notification")
+           .setContentText("Hello World!")
+           .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+           .setContentIntent(pendingIntent)
+           .addAction(R.drawable.ic_snooze, getString(R.string.snooze),
+                   snoozePendingIntent);
   ```
 &nbsp; &nbsp;  Above is the code that shows how to send a broadcast to a specific receiver.
 
 4. Add a direct reply action <br/>
-The direct reply action allows the user to directly enter text into the notification.  Such features are commonly seen in messaging applications like WhatsApp, Facebook messenger, etc.
+The direct reply action allows the user to directly enter text into the notification. Such features are commonly seen in messaging applications like WhatsApp, Facebook messenger, etc.
 
 <p align="center">
   <img src="https://github.com/saloni33/android_documentation/blob/main/image/reply_action.jpeg"  height="220">
 </p>
 
-&nbsp; &nbsp; The direct reply action opens a text input for the user to type the reply message. When the user finishes, the system attaches the response to the intent you had specified for the notification action and sends the intent to your app.
+&nbsp; &nbsp; The direct reply action opens a text input for the user to type the reply message. When the user finishes, the system 
+              attaches the response to the intent you had specified for the notification action and sends the intent to your app.
 
 - Add the reply button
 Steps to create notification action with a direct reply 
@@ -214,7 +216,7 @@ To receive the input from the notification's reply UI which the user has entered
      return null;
   }
   ```
-&nbsp; &nbsp;&nbsp; &nbsp; After this step, you need to update the notification, so as to hide the direct reply UI,  by calling 
+&nbsp; &nbsp;&nbsp; &nbsp; After this step, you need to update the notification, so as to hide the direct reply UI, by calling 
 &nbsp; &nbsp;&nbsp; &nbsp; NotificationManagerCompat.notify() with the same ID and tag (if used). 
 
   ```

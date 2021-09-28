@@ -24,7 +24,7 @@ The design of notification is quite simple, it contains an icon, title, some bri
 <p align="center">
   <img src="https://github.com/saloni33/android_documentation/blob/main/image/example_image.png" width="540" height="200">
 </p>
-1. Small Icon - This can be set using setSmallIcon(). <br/>
+1. Small Icon - This can be set using [setSmallIcon](https://developer.android.com/reference/android/app/Notification.Builder#setSmallIcon) <br/>
 2. App Name - This is provided by the app itself. <br/>
 3. Timestamp - This is provided by the system but you can override it with setWhen() or hide it with setShowWhen(false). <br/>
 4. Large icon - This is optional (usually used only for contact photos; do not use it for your app icon) and set with setLargeIcon(). <br/>
@@ -214,7 +214,8 @@ To receive the input from the notification's reply UI which the user has entered
      return null;
   }
   ```
-&nbsp; &nbsp;&nbsp; &nbsp; After this step, you need to update the notification, so as to hide the direct reply UI,  by calling &nbsp; &nbsp;&nbsp; &nbsp; NotificationManagerCompat.notify() with the same ID and tag (if used). 
+&nbsp; &nbsp;&nbsp; &nbsp; After this step, you need to update the notification, so as to hide the direct reply UI,  by calling 
+&nbsp; &nbsp;&nbsp; &nbsp; NotificationManagerCompat.notify() with the same ID and tag (if used). 
 
   ```
    // Build a new notification, which informs the user that the system
@@ -231,4 +232,77 @@ To receive the input from the notification's reply UI which the user has entered
   
 &nbsp; &nbsp;&nbsp; &nbsp; When working with this new notification, use the context that's passed to the receiver's onReceive() method. <br/>
 &nbsp; &nbsp;&nbsp; &nbsp; You should also append the reply to the bottom of the notification by calling setRemoteInputHistory().
+
+- Add a progress bar <br/>
+You can also include a progress bar in a notification to show the progress of the ongoing operation. Example - <br/>
+The progress bar supports two modes to represent progress: determinate, and indeterminate.  To set the determinate form of the progress you can use setProgress(max, progress, false). The first parameter “max” is the complete value of the process and the second parameter “progress” shows how much action is completed. The last parameter “false” shows that it is a determinate progress bar.  
+
+  ```
+    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+    NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
+    builder.setContentTitle("Picture Download")
+          .setContentText("Download in progress")
+          .setSmallIcon(R.drawable.ic_notification)
+          .setPriority(NotificationCompat.PRIORITY_LOW);
+
+    // Issue the initial notification with zero progress
+    int PROGRESS_MAX = 100;
+    int PROGRESS_CURRENT = 0;
+    builder.setProgress(PROGRESS_MAX, PROGRESS_CURRENT, false);
+    notificationManager.notify(notificationId, builder.build());
+
+    // Do the job here that tracks the progress.
+    // Usually, this should be in a
+    // worker thread
+    // To show progress, update PROGRESS_CURRENT and update the notification with:
+    // builder.setProgress(PROGRESS_MAX, PROGRESS_CURRENT, false);
+    // notificationManager.notify(notificationId, builder.build());
+
+    // When done, update the notification one more time to remove the progress bar
+    builder.setContentText("Download complete").setProgress(0,0,false);
+    notificationManager.notify(notificationId, builder.build());
+  ```
+  
+&nbsp; &nbsp;&nbsp; &nbsp; Remember to update the notification text to show that the operation is complete. If you actually need to download a file, you should consider using DownloadManager, which provides its own notification to track your download progress.
+
+-  Set a system-wide category <br/>
+Android has a special category named system-wide category to determine whether to disturb a user by showing the particular notification if the user has enabled Do Not Disturb mode. <br/>
+If the notification comes under the pre-defined categories defined in NotificationCompat the only you should declare it by passing the appropriate category to setCategory() as shown below.
+
+  ```
+    NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+          .setSmallIcon(R.drawable.notification_icon)
+          .setContentTitle("My notification")
+          .setContentText("Hello World!")
+          .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+          .setCategory(NotificationCompat.CATEGORY_MESSAGE);
+  ```
+
+- Show an urgent message <br/>
+Sometimes the app requires to show an urgent message, such as an upcoming alarm or a phone call, then you can associate full-screen intent with that particularly for the urgent notification. <br/>
+If the user’s device is locked, then it will cover the full locked screen to show this message, or if it’s not locked then the notification appears in an expanded form. <br/>
+The following code shows how to integrate the notification message with full-screen intent - 
+
+  ```
+    Intent fullScreenIntent = new Intent(this, ImportantActivity.class);
+    PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(this, 0, fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+    NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+           .setSmallIcon(R.drawable.notification_icon)
+           .setContentTitle("My notification")
+           .setContentText("Hello World!")
+           .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+           .setFullScreenIntent(fullScreenPendingIntent, true);
+  ```
+  
+- Update a notification <br/>
+To update the notification after the user has received it, call the NotificationManagerCompat.notify() again, and pass it a notification with the same ID you used previously. If the previous notification has been dismissed, a new notification is created in its place.
+
+- Remove a notification <br/>
+The notification remains visible until the following action is not performed - 
+  - Dismiss the notification
+  - Click on the notification and you called setAutoCancel() when you created the notification.
+  - You call cancel() for a specific notification ID.
+  - You call cancelAll(), which removes all of the notifications you previously issued.
+
 

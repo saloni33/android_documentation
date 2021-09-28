@@ -129,7 +129,7 @@ When we receive a notification, there is only a single action available -tapping
   <img src="https://github.com/saloni33/android_documentation/blob/main/image/snooze_example.jpeg" width="320" height="220">
 </p>
 
-&nbsp; &nbsp;  To add an action button, pass a PendingIntent to the addAction() method. This is just like setting up the &nbsp; &nbsp;notification's default tap action, except instead of launching an activity.
+&nbsp; &nbsp;  To add an action button, pass a PendingIntent to the addAction() method. This is just like setting up the &nbsp; &nbsp; notification's default tap action, except instead of launching an activity.
 
 ```
 Intent snoozeIntent = new Intent(this, MyBroadcastReceiver.class);
@@ -148,3 +148,70 @@ NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNE
                 snoozePendingIntent);
 ```
 &nbsp; &nbsp;  Above is the code that shows how to send a broadcast to a specific receiver.
+
+4. Add a direct reply action <br/>
+The direct reply action allows the user to directly enter text into the notification.  Such features are commonly seen in messaging applications like WhatsApp, Facebook messenger, etc.
+
+<p align="center">
+  <img src="https://github.com/saloni33/android_documentation/blob/main/image/reply_action.jpeg"  height="220">
+</p>
+
+&nbsp; &nbsp; The direct reply action opens a text input for the user to type the reply message. When the user finishes, the system attaches the response to the intent you had specified for the notification action and sends the intent to your app.
+
+- Add the reply button
+Steps to create notification action with a direct reply 
+  - Create an instance of RemoteInput.Builder that you can add to your notification action.
+  ```
+    // Key for the string that's delivered in the action's intent.
+  private static final String KEY_TEXT_REPLY = "key_text_reply";
+  String replyLabel = getResources().getString(R.string.reply_label);
+  RemoteInput remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY)
+          .setLabel(replyLabel)
+          .build();
+  ```
+
+  - Create a PendingIntent for the reply action.
+  ```
+    // Build a PendingIntent for the reply action to trigger.
+    PendingIntent replyPendingIntent =
+        PendingIntent.getBroadcast(getApplicationContext(),
+                conversation.getConversationId(),
+                getMessageReplyIntent(conversation.getConversationId()),
+                PendingIntent.FLAG_UPDATE_CURRENT);
+   ```
+   
+   - Attach the RemoteInput object to an action using addRemoteInput().
+   ```
+     // Create the reply action and add the remote input.
+     NotificationCompat.Action action =
+          new NotificationCompat.Action.Builder(R.drawable.ic_reply_icon,
+                  getString(R.string.label), replyPendingIntent)
+                  .addRemoteInput(remoteInput)
+                  .build();
+  ```
+  - Apply the action to notification and issue the notification.
+  ```
+    // Build the notification and add the action.
+    Notification newMessageNotification = new Notification.Builder(context, CHANNEL_ID)
+          .setSmallIcon(R.drawable.ic_message)
+          .setContentTitle(getString(R.string.title))
+          .setContentText(getString(R.string.content))
+          .addAction(action)
+          .build();
+    // Issue the notification.
+    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+    notificationManager.notify(notificationId, newMessageNotification);
+   ```
+   
+   
+
+  
+  
+   
+   
+    
+
+ 
+
+
+

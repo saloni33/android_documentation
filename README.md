@@ -237,7 +237,8 @@ The progress bar supports two modes to represent progress: determinate, and inde
     notificationManager.notify(notificationId, builder.build());
   ```
   
-&nbsp; &nbsp;&nbsp; &nbsp; Remember to update the notification text to show that the operation is complete. If you actually need to &nbsp; &nbsp;&nbsp; &nbsp; download a file, you should consider using [DownloadManager](https://developer.android.com/reference/android/app/DownloadManager), which provides its own notification to track your download progress.
+&nbsp; &nbsp;&nbsp; &nbsp; Remember to update the notification text to show that the operation is complete. If you actually need to <br/>
+&nbsp; &nbsp;&nbsp; &nbsp; download a file, you should consider using [DownloadManager](https://developer.android.com/reference/android/app/DownloadManager), which provides its own notification to track your download progress.
 
 -  Set a system-wide category <br/>
 Android has a special category named system-wide category to determine whether to disturb a user by showing the particular notification if the user has enabled [Do Not Disturb mode](https://developer.android.com/guide/topics/ui/notifiers/notifications#dnd-mode). <br/>

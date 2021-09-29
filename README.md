@@ -190,7 +190,8 @@ To receive the input from the notification's reply UI which the user has entered
      return null;
   }
   ```
-&nbsp; &nbsp;&nbsp; &nbsp; After this step, you need to update the notification, so as to hide the direct reply UI, by calling &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;  &nbsp;  &nbsp; [NotificationManagerCompat.notify()](https://developer.android.com/reference/androidx/core/app/NotificationManagerCompat#notify(int,%20android.app.Notification)) with the same ID and tag (if used). 
+&nbsp; &nbsp;&nbsp; &nbsp; After this step, you need to update the notification, so as to hide the direct reply UI, by calling <br/>
+&nbsp; &nbsp; &nbsp; &nbsp; [NotificationManagerCompat.notify()](https://developer.android.com/reference/androidx/core/app/NotificationManagerCompat#notify(int,%20android.app.Notification)) with the same ID and tag (if used). 
 
   ```
     // Build a new notification, which informs the user that the system

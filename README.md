@@ -190,7 +190,7 @@ To receive the input from the notification's reply UI which the user has entered
      return null;
   }
   ```
-&nbsp; &nbsp;&nbsp; &nbsp; After this step, you need to update the notification, so as to hide the direct reply UI, by calling NotificationManagerCompat.notify() with the same ID and tag (if used). 
+&nbsp; &nbsp;&nbsp; &nbsp; After this step, you need to update the notification, so as to hide the direct reply UI, by calling &nbsp; &nbsp;&nbsp; &nbsp;  NotificationManagerCompat.notify() with the same ID and tag (if used). 
 
   ```
     // Build a new notification, which informs the user that the system
@@ -204,11 +204,11 @@ To receive the input from the notification's reply UI which the user has entered
    notificationManager.notify(notificationId, repliedNotification);
   ```
   
-&nbsp; &nbsp;&nbsp; &nbsp; When working with this new notification, use the context that's passed to the receiver's onReceive() method. You should also append the reply to the bottom of the notification by calling setRemoteInputHistory().
+&nbsp; &nbsp;&nbsp; &nbsp; When working with this new notification, use the context that's passed to the receiver's onReceive() method. You &nbsp; &nbsp;&nbsp; &nbsp; should also append the reply to the bottom of the notification by calling setRemoteInputHistory().
 
 - Add a progress bar <br/>
 You can also include a progress bar in a notification to show the progress of the ongoing operation. Example - <br/>
-The progress bar supports two modes to represent progress: determinate, and indeterminate.  To set the determinate form of the progress you can use setProgress(max, progress, false). The first parameter “max” is the complete value of the process and the second parameter “progress” shows how much action is completed. The last parameter “false” shows that it is a determinate progress bar.  
+The progress bar supports two modes to represent progress: determinate, and indeterminate. To set the determinate form of the progress you can use setProgress(max, progress, false). The first parameter “max” is the complete value of the process and the second parameter “progress” shows how much action is completed. The last parameter “false” shows that it is a determinate progress bar.  
 
   ```
     NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
@@ -236,7 +236,7 @@ The progress bar supports two modes to represent progress: determinate, and inde
     notificationManager.notify(notificationId, builder.build());
   ```
   
-&nbsp; &nbsp;&nbsp; &nbsp; Remember to update the notification text to show that the operation is complete. If you actually need to download a file, you should consider using DownloadManager, which provides its own notification to track your download progress.
+&nbsp; &nbsp;&nbsp; &nbsp; Remember to update the notification text to show that the operation is complete. If you actually need to &nbsp; &nbsp;&nbsp; &nbsp; download a file, you should consider using DownloadManager, which provides its own notification to track your download progress.
 
 -  Set a system-wide category <br/>
 Android has a special category named system-wide category to determine whether to disturb a user by showing the particular notification if the user has enabled Do Not Disturb mode. <br/>

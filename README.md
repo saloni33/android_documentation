@@ -190,7 +190,7 @@ To receive the input from the notification's reply UI which the user has entered
      return null;
   }
   ```
-&nbsp; &nbsp;&nbsp; &nbsp; After this step, you need to update the notification, so as to hide the direct reply UI, by calling &nbsp; &nbsp;&nbsp; &nbsp;  NotificationManagerCompat.notify() with the same ID and tag (if used). 
+&nbsp; &nbsp;&nbsp; &nbsp; After this step, you need to update the notification, so as to hide the direct reply UI, by calling &nbsp; &nbsp;&nbsp; &nbsp;  &nbsp;  &nbsp;  &nbsp; NotificationManagerCompat.notify() with the same ID and tag (if used). 
 
   ```
     // Build a new notification, which informs the user that the system
@@ -204,7 +204,7 @@ To receive the input from the notification's reply UI which the user has entered
    notificationManager.notify(notificationId, repliedNotification);
   ```
   
-&nbsp; &nbsp;&nbsp; &nbsp; When working with this new notification, use the context that's passed to the receiver's onReceive() method. You &nbsp; &nbsp;&nbsp; &nbsp; should also append the reply to the bottom of the notification by calling setRemoteInputHistory().
+&nbsp; &nbsp;&nbsp; &nbsp; When working with this new notification, use the context that's passed to the receiver's onReceive() method. You &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; should also append the reply to the bottom of the notification by calling setRemoteInputHistory().
 
 - Add a progress bar <br/>
 You can also include a progress bar in a notification to show the progress of the ongoing operation. Example - <br/>

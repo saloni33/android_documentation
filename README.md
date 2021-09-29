@@ -190,7 +190,7 @@ To receive the input from the notification's reply UI which the user has entered
      return null;
   }
   ```
-&nbsp; &nbsp;&nbsp; &nbsp; After this step, you need to update the notification, so as to hide the direct reply UI, by calling <br/>
+&nbsp; &nbsp; &nbsp; &nbsp; After this step, you need to update the notification, so as to hide the direct reply UI, by calling <br/>
 &nbsp; &nbsp; &nbsp; &nbsp; [NotificationManagerCompat.notify()](https://developer.android.com/reference/androidx/core/app/NotificationManagerCompat#notify(int,%20android.app.Notification)) with the same ID and tag (if used). 
 
   ```
@@ -205,7 +205,8 @@ To receive the input from the notification's reply UI which the user has entered
    notificationManager.notify(notificationId, repliedNotification);
   ```
   
-&nbsp; &nbsp;&nbsp; &nbsp; When working with this new notification, use the context that's passed to the receiver's [onReceive()](https://developer.android.com/reference/android/content/BroadcastReceiver#onReceive(android.content.Context,%20android.content.Intent)) method. You &nbsp; &nbsp; &nbsp; &nbsp; should also append the reply to the bottom of the notification by calling [setRemoteInputHistory()](https://developer.android.com/reference/android/app/Notification.Builder#setRemoteInputHistory(java.lang.CharSequence[])).
+&nbsp; &nbsp;&nbsp; &nbsp; When working with this new notification, use the context that's passed to the receiver's [onReceive()](https://developer.android.com/reference/android/content/BroadcastReceiver#onReceive(android.content.Context,%20android.content.Intent)) method. You <br/>
+&nbsp; &nbsp;&nbsp; &nbsp; should also append the reply to the bottom of the notification by calling [setRemoteInputHistory()](https://developer.android.com/reference/android/app/Notification.Builder#setRemoteInputHistory(java.lang.CharSequence[])).
 
 - Add a progress bar <br/>
 You can also include a progress bar in a notification to show the progress of the ongoing operation. Example - <br/>
@@ -238,7 +239,8 @@ The progress bar supports two modes to represent progress: determinate, and inde
   ```
   
 &nbsp; &nbsp;&nbsp; &nbsp; Remember to update the notification text to show that the operation is complete. If you actually need to <br/>
-&nbsp; &nbsp;&nbsp; &nbsp; download a file, you should consider using [DownloadManager](https://developer.android.com/reference/android/app/DownloadManager), which provides its own notification to track your download progress.
+&nbsp; &nbsp;&nbsp; &nbsp; download a file, you should consider using [DownloadManager](https://developer.android.com/reference/android/app/DownloadManager), which provides its own notification to track your <br/>
+&nbsp; &nbsp;&nbsp; &nbsp; download progress.
 
 -  Set a system-wide category <br/>
 Android has a special category named system-wide category to determine whether to disturb a user by showing the particular notification if the user has enabled [Do Not Disturb mode](https://developer.android.com/guide/topics/ui/notifiers/notifications#dnd-mode). <br/>

@@ -26,6 +26,7 @@ The design of notification is quite simple, it contains an icon, title, some bri
 <p align="center">
   <img src="https://github.com/saloni33/android_documentation/blob/main/image/example_image.png" widdth="370" height="200">
 </p>
+
 ## Using Notification Channels 
 Notification Channels provide you with the ability to group the notifications that our application sends into manageable groups. Starting in Android 8.0 (API level 26), all notifications must be assigned to a channel or they will not appear. <br/><br/>
 By managing different channels, users will be able to disable specific notifications (instead of disabling all notifications),  and users can control the visual and auditory options for each channel. <br/><br/>

@@ -8,6 +8,10 @@ Notifications could be of various formats and designs depending upon the develop
 4. Lock-Screen Notification - It appears on the lock screen. Beginning with Android 5.0, notifications can appear on the lock screen.
 5. App icon badge -  In supported launchers on devices running Android 8.0 (API level 26) and higher, app icons indicate new notifications with a colored "badge" (also known as a "notification dot") on the corresponding app launcher icon.  
 
+<p align="center">
+  <img src="https://github.com/saloni33/android_documentation/blob/main/image/app_badge_icon.png" width="300" height="200" hpsace ="30">
+  <img src="https://github.com/saloni33/android_documentation/blob/main/image/status_bar.png" width="300" height="200" hspace="30">
+</p>
 
 ## Create a Notification
 The design of notification is quite simple, it contains an icon, title, some brief about the message(optional), and click. An example of the same is shown below:
@@ -19,6 +23,9 @@ The design of notification is quite simple, it contains an icon, title, some bri
 5. Title - This is optional and set with [setContentTitle()](https://developer.android.com/reference/android/app/Notification.Builder#setContentTitle(java.lang.CharSequence)). <br/>
 6. Text - This is optional and set with [setContentText()](https://developer.android.com/reference/android/app/Notification.Builder#setContentText(java.lang.CharSequence)). <br/>
 
+<p align="center">
+  <img src="https://github.com/saloni33/android_documentation/blob/main/image/example_image.png" widdth="370" height="200">
+</p>
 ## Using Notification Channels 
 Notification Channels provide you with the ability to group the notifications that our application sends into manageable groups. Starting in Android 8.0 (API level 26), all notifications must be assigned to a channel or they will not appear. <br/><br/>
 By managing different channels, users will be able to disable specific notifications (instead of disabling all notifications),  and users can control the visual and auditory options for each channel. <br/><br/>
@@ -40,6 +47,9 @@ Many projects made with Android Studio already include the necessary dependencie
 
 2. Create a basic notification <br/>
 A basic notification contains an icon, title, a short description. Below are some steps, from which you can learn how to create a simple notification that a user can click on.
+<p align="center">
+  <img src="https://github.com/saloni33/android_documentation/blob/main/image/basic_notification.jpeg" width="350" height="170">
+</p>
 
 - Set notification content <br/>
 First of all, we need to set the notification content and channel using a [NotificationCompat.Builder object](https://developer.android.com/reference/androidx/core/app/NotificationCompat.Builder). <br/>
@@ -83,7 +93,6 @@ Construct a NotificationChannel object which requires unique channel_id and chan
              notificationManager.createNotificationChannel(channel);
         }
 }
-
 ```
 
 - Set the notification's tap action <br/>
@@ -114,12 +123,15 @@ To make the notification appear on the screen, we need to call [NotificationMana
 3. Add action buttons <br/>
 When we receive a notification, there is only a single action available -tapping on the notification. However, Action Buttons allow more than one action to be taken on a notification, allowing for greater interactivity within notifications, like snooze or dismiss, etc. <br/> <br/> To add an action button, pass a PendingIntent to the addAction() method. This is just like setting up the notification's default tap action, except instead of launching an activity.
 
+<p align="center">
+  <img src="https://github.com/saloni33/android_documentation/blob/main/image/snooze_example.jpeg" height="250">
+</p>
+
   ```
     Intent snoozeIntent = new Intent(this, MyBroadcastReceiver.class);
     snoozeIntent.setAction(ACTION_SNOOZE);
     snoozeIntent.putExtra(EXTRA_NOTIFICATION_ID, 0);
     PendingIntent snoozePendingIntent = PendingIntent.getBroadcast(this, 0, snoozeIntent, 0);
-
     NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
            .setSmallIcon(R.drawable.notification_icon)
            .setContentTitle("My notification")
@@ -135,8 +147,13 @@ When we receive a notification, there is only a single action available -tapping
 The direct reply action allows the user to directly enter text into the notification. Such features are commonly seen in messaging applications like WhatsApp, Facebook messenger, etc. <br/>
 The direct reply action opens a text input for the user to type the reply message. When the user finishes, the system attaches the response to the intent you had specified for the notification action and sends the intent to your app.
 
+<p align="center">
+  <img src="https://github.com/saloni33/android_documentation/blob/main/image/reply_action.jpeg" width="700" height="200">
+</p>
+
 - Add the reply button
 Steps to create notification action with a direct reply 
+
   - Create an instance of [RemoteInput.Builder](https://developer.android.com/reference/androidx/core/app/RemoteInput.Builder) that you can add to your notification action.
   ```
     // Key for the string that's delivered in the action's intent.
@@ -156,7 +173,7 @@ Steps to create notification action with a direct reply
                 getMessageReplyIntent(conversation.getConversationId()),
                 PendingIntent.FLAG_UPDATE_CURRENT);
    ```
-   
+
    - Attach the [RemoteInput](https://developer.android.com/reference/android/app/RemoteInput) object to an action using [addRemoteInput()](https://developer.android.com/reference/androidx/core/app/NotificationCompat.Action.Builder#addRemoteInput(android.support.v4.app.RemoteInput)).
    ```
      // Create the reply action and add the remote input.
@@ -204,12 +221,16 @@ To receive the input from the notification's reply UI which the user has entered
    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
    notificationManager.notify(notificationId, repliedNotification);
   ```
-  
+
 &nbsp; &nbsp;&nbsp; &nbsp; When working with this new notification, use the context that's passed to the receiver's [onReceive()](https://developer.android.com/reference/android/content/BroadcastReceiver#onReceive(android.content.Context,%20android.content.Intent)) method. You <br/>
 &nbsp; &nbsp;&nbsp; &nbsp; should also append the reply to the bottom of the notification by calling [setRemoteInputHistory()](https://developer.android.com/reference/android/app/Notification.Builder#setRemoteInputHistory(java.lang.CharSequence[])).
 
 - Add a progress bar <br/>
 You can also include a progress bar in a notification to show the progress of the ongoing operation. Example - <br/>
+<p align="center">
+  <img src="https://github.com/saloni33/android_documentation/blob/main/image/progress_action.png" width="340" height="200">
+</p>
+
 The progress bar supports two modes to represent progress: determinate, and indeterminate. To set the determinate form of the progress you can use [setProgress(max, progress, false)](https://developer.android.com/reference/androidx/core/app/NotificationCompat.Builder#setProgress(int,%20int,%20boolean)). The first parameter “max” is the complete value of the process and the second parameter “progress” shows how much action is completed. The last parameter “false” shows that it is a determinate progress bar.  
 
   ```
@@ -219,25 +240,22 @@ The progress bar supports two modes to represent progress: determinate, and inde
           .setContentText("Download in progress")
           .setSmallIcon(R.drawable.ic_notification)
           .setPriority(NotificationCompat.PRIORITY_LOW);
-
     // Issue the initial notification with zero progress
     int PROGRESS_MAX = 100;
     int PROGRESS_CURRENT = 0;
     builder.setProgress(PROGRESS_MAX, PROGRESS_CURRENT, false);
     notificationManager.notify(notificationId, builder.build());
-
     // Do the job here that tracks the progress.
     // Usually, this should be in a
     // worker thread
     // To show progress, update PROGRESS_CURRENT and update the notification with:
     // builder.setProgress(PROGRESS_MAX, PROGRESS_CURRENT, false);
     // notificationManager.notify(notificationId, builder.build());
-
     // When done, update the notification one more time to remove the progress bar
     builder.setContentText("Download complete").setProgress(0,0,false);
     notificationManager.notify(notificationId, builder.build());
   ```
-  
+
 &nbsp; &nbsp;&nbsp; &nbsp; Remember to update the notification text to show that the operation is complete. If you actually need to <br/>
 &nbsp; &nbsp;&nbsp; &nbsp; download a file, you should consider using [DownloadManager](https://developer.android.com/reference/android/app/DownloadManager), which provides its own notification to track your <br/>
 &nbsp; &nbsp;&nbsp; &nbsp; download progress.
@@ -263,7 +281,6 @@ The following code shows how to integrate the notification message with full-scr
   ```
     Intent fullScreenIntent = new Intent(this, ImportantActivity.class);
     PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(this, 0, fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
     NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
            .setSmallIcon(R.drawable.notification_icon)
            .setContentTitle("My notification")
@@ -271,7 +288,7 @@ The following code shows how to integrate the notification message with full-scr
            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
            .setFullScreenIntent(fullScreenPendingIntent, true);
   ```
-  
+
 - Update a notification <br/>
 To update the notification after the user has received it, call the NotificationManagerCompat.notify() again, and pass it a notification with the same ID you used previously. If the previous notification has been dismissed, a new notification is created in its place.
 
@@ -281,5 +298,3 @@ The notification remains visible until the following action is not performed -
   - Click on the notification and you called [setAutoCancel()](https://developer.android.com/reference/androidx/core/app/NotificationCompat.Builder#setAutoCancel(boolean)) when you created the notification.
   - You call [cancel()](https://developer.android.com/reference/android/app/NotificationManager#cancel(int)) for a specific notification ID.
   - You call [cancelAll()](https://developer.android.com/reference/android/app/NotificationManager#cancelAll()), which removes all of the notifications you previously issued.
-
-
